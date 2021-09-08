@@ -1,0 +1,70 @@
+#! /usr/bin/Rscript
+## Collect arguments
+args <- commandArgs(TRUE)
+## Parse arguments (we expect the form --arg=value)
+parseArgs <- function(x) strsplit(sub("^--", "", x), "=")
+argsL <- as.list(as.character(as.data.frame(do.call("rbind", parseArgs(args)))$V2))
+names(argsL) <- as.data.frame(do.call("rbind", parseArgs(args)))$V1
+args <- argsL
+rm(argsL)
+
+# ## Give some value to options if not provided 
+# if(is.null(args$opt_arg1)) {args$opt_arg1="default_option1"}
+# if(is.null(args$opt_arg2)) {args$opt_arg2="default_option1"} else {args$opt_arg2=as.numeric(args$opt_arg2)}
+## Default setting when no all arguments passed or help needed
+if("--help" %in% args | is.null(args$l) | is.null(args$m) | is.null(args$c) | is.null(args$o)) {
+  cat("
+  	Xiangyu Pan
+  	8/27/2021
+      The R Script of extracting and filtering genes
+      
+      Mandatory arguments:
+      --l=list           - trusted genes list
+      --m=matrix           - segment_gene.tsv
+      --c=colName           - colName
+      --o=outfile           - outputfiles
+      --help                - print this text
+
+ 	WARNING : you should install the R packages readr
+
+ 	The pricinple of gene filter:
+	1.Remove duplicated genes from cnvkit gene-level file keep gene from dup.
+	        - take long length one & high segment_weight
+	2.Remove cn==2 genes (it happened due to different cutoff in cnvkit e.g. -t 1.1,-0.25,0.2,0.7)
+
+      Example:
+      Rscript ./extract_and_filter_Scripts --l sample.trusted-genes.txt --m sample.segment_gene.rmXY.raw.tsv --c gene --o sample.segment_gene.trusted.gainloss.tmp \n\n")
+  q(save="no")
+}
+# cat("first mandatory argument : ", args$l,"\n",sep="")
+# cat("second mandatory argument : ", args$m,"\n",sep="")
+# cat("third mandatory argument : ", args$c,"\n",sep="")
+# cat("fourth mandatory argument : ", args$o,"\n",sep="")
+require(readr)
+geneList <- read.table(args$l)
+matrix <- data.frame(read_tsv(args$m, col_names=TRUE))
+matrix_extract <- matrix[matrix[,args$c]%in%as.character(geneList$V1),]
+#write_tsv(matrix_extract, path = args$o)
+message("gene extracted finished")
+message("filter gene whose cn = 2")
+matrix_extract_filter <- subset(matrix_extract,cn!=2)
+message("filter duplicated gene")
+dup_genes <- names(table(matrix_extract_filter$gene))[table(matrix_extract_filter$gene)>1]
+tmp_all_ <- lapply(dup_genes,function(x) {
+	tmp <- subset(matrix_extract_filter,gene==x)
+	tmp$length <- tmp$end-tmp$start
+	max_length <- tmp$length[tmp$length==max(tmp$length)]
+	if (length(max_length)==1){
+		tmp1 <- subset(tmp,length==max_length)
+		tmp1 <- tmp1[,-ncol(tmp1)]
+	} else {
+		tmp1 <- subset(tmp,segment_weight==max(tmp$segment_weight))
+		tmp1 <- tmp1[,-ncol(tmp1)]
+	}
+	return(tmp1)
+	})
+dup_matrix <- do.call(rbind,tmp_all_)
+matrix_extract_uni <- matrix_extract_filter[matrix_extract_filter[,"gene"]%in%names(table(matrix_extract_filter$gene))[table(matrix_extract_filter$gene)==1],]
+matrix_extract_uni <- rbind(matrix_extract_uni,dup_matrix)
+write_tsv(matrix_extract_uni, path = args$o)
+message("gene filter finished")

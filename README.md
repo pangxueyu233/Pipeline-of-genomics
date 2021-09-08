@@ -7,7 +7,6 @@ The software we need:
 #bwa
 Program: bwa (alignment via Burrows-Wheeler transformation)
 Version: 0.7.17-r1188
-Contact: Heng Li <lh3@sanger.ac.uk>
 
 #gatk4.1
 GATK=/mnt/data/user_data/xiangyu/programme/gatk-4.1.3.0/gatk
@@ -27,7 +26,13 @@ R scripting front-end version 3.5.1 (2018-07-02)
 perl --version
 This is perl 5, version 22, subversion 1 (v5.22.1) built for x86_64-linux-gnu-thread-multi
 (with 77 registered patches, see perl -V for more detail)
+
+#The extend tools of CNV dected
+./CNV_pipeline/
+.
+├── extract_and_filter_Scripts
+└── merge_cnvkit_res_Scripts
 ~~~
 
-
+This 
 

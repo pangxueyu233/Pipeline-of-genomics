@@ -1,0 +1,68 @@
+#! /usr/bin/Rscript
+## Collect arguments
+args <- commandArgs(TRUE)
+## Parse arguments (we expect the form --arg=value)
+parseArgs <- function(x) strsplit(sub("^--", "", x), "=")
+argsL <- as.list(as.character(as.data.frame(do.call("rbind", parseArgs(args)))$V2))
+names(argsL) <- as.data.frame(do.call("rbind", parseArgs(args)))$V1
+args <- argsL
+rm(argsL)
+if (is.null(unlist(args))){
+  args <- "--help"
+}
+# print(args)
+# ## Give some value to options if not provided 
+# if(is.null(args$opt_arg1)) {args$opt_arg1="default_option1"}
+# if(is.null(args$opt_arg2)) {args$opt_arg2="default_option1"} else {args$opt_arg2=as.numeric(args$opt_arg2)}
+## Default setting when no all arguments passed or help needed
+if("--help" %in% args) {
+  cat("
+  	Xiangyu Pan
+  	8/30/2021
+      The R Script merge cnvkit res
+      
+      Mandatory arguments:
+      --call_cns=call.cns.files         - the path of all call.cns files
+      --out_cns=merge.call.cns          - the output of merge call.cns files
+      --seg_gene=seg.gene.files         - the path of all segment-gene files
+      --out_seg=merge.seg               - the output of merge seg.gene files
+      --prefix=prefix                   - new names of merge files
+      --help                            - print this text
+
+ 	WARNING : you should install the R packages readr
+
+  Example:
+          Rscript ./merge_cnvkit_res_Scripts \
+            --call_cns=./sample_sampletable1.csv \
+            --out_cns=./ \
+            --seg_gene=case \
+            --out_seg=ctrl \
+            --prefix=all_merge  \n\n")
+
+  q(save="no")
+}
+
+All_files <- setdiff(list.files(args$call_cns,pattern=".call.cns"),grep("pdf",list.files(args$call_cns,pattern=".call.cns"),value=TRUE))
+All_files_ <- lapply(All_files,function(x) {
+  sel_tmp <- read.table(paste0(args$call_cns,"/",x),header=TRUE)
+  sel_tmp$sample <- gsub(".call.cns","",x)
+  return(sel_tmp)
+  })
+All_files <- do.call(rbind,All_files_)
+write.table(All_files,paste0(args$out_cns,"/",args$prefix,"_merge.call.cns"),row.names=FALSE)
+message("call.cns files merge finished")
+
+require(readr)
+seg_gene_files <- setdiff(list.files(args$seg_gene,pattern=".tsv"),grep(".raw.tsv",list.files(args$seg_gene,pattern=".tsv"),value=TRUE))
+type <- strsplit(seg_gene_files[1],split="[.]")[[1]]
+type <- type[(length(type)-1)]
+seg_gene_files_ <- lapply(seg_gene_files,function(x) {
+  sel_tmp <- data.frame(read_tsv(paste0(args$seg_gene,"/",x), col_names=TRUE))
+  sam_n <- gsub(".segment_gene.trusted.gainloss","",x)
+  sam_n <- gsub(".tsv","",sam_n)
+  sel_tmp$sample <- sam_n
+  return(sel_tmp)
+  })
+seg_gene_files <- do.call(rbind,seg_gene_files_)
+write_tsv(seg_gene_files, path = paste0(args$out_seg,"/",args$prefix,".merge.segment_gene.trusted.gainloss.",type,".tsv"))
+message("seg_gene_files merge finished")
