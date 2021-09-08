@@ -36,7 +36,7 @@ This is perl 5, version 22, subversion 1 (v5.22.1) built for x86_64-linux-gnu-th
 
 - As the reference data of human are much more sufficient than and mouse, this pipeline split into two part. One of them is used on human data, and the other one is used on mouse data.
   - If you want use `genomics piepline` on **human data**, you could access the detail info by clicking [here](On_mouse_data.md)
-  - If you want use `genomics piepline` on [**mouse data**](On_human_data.md), you could access the detail info by clicking [here](On_human_data.md)
+  - If you want use `genomics piepline` on [**mouse data**](On_mouse_data.md), you could access the detail info by clicking [here](On_mouse_data.md)
 
 
 
