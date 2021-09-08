@@ -226,7 +226,7 @@ $CNVKIT heatmap $all_chr_out/*.allChr.call.cns \
 -d -o $all_chr_out/all_merge_all_chr_CNV_heatmap.pdf
 ~~~
 
-![image-20210831115135764](D:\github_clone\Pipeline-of-genomics\The analysis_of_mouse_WGS.assets\image-20210831115135764.png)
+![image-20210831115135764](analysis_of_mouse_WGS.assets/image-20210831115135764.png)
 
 # step5. visualize the CNV results in R
 
@@ -265,7 +265,7 @@ plot <- Seurat::CombinePlots(All_plot,ncol=1)
 ggsave("/mnt/data/userdata/abao/project/4_whole_genome_sequencing/1_Lishujun/other/cnvkit_out/rm_XY/all_somatic_CNV_plot_each_sample.png", plot=plot,dpi=1080,width = 20, height = 10.6)
 ~~~
 
-![image-20210901113146991](D:\github_clone\Pipeline-of-genomics\The analysis_of_mouse_WGS.assets\image-20210901113146991.png)
+![image-20210901113146991](analysis_of_mouse_WGS.assets/image-20210901113146991.png)
 
 ~~~R
 
@@ -288,7 +288,7 @@ cnFreq(subset(all_merge_call_copy1_genvisr,sample=="KO"),
    plotChr = c("chr1","chr2","chr3","chr4","chr5","chr6","chr7","chr8","chr9","chr10","chr11","chr12","chr13","chr14","chr15","chr16","chr17","chr18","chr19"))
 ~~~
 
-![image-20210901113206809](D:\github_clone\Pipeline-of-genomics\The analysis_of_mouse_WGS.assets\image-20210901113206809.png)
+![image-20210901113206809](analysis_of_mouse_WGS.assets/image-20210901113206809.png)
 
 ## 5.2 sig CNV detected (***strict filtered, occurred in all case/control group, receptively***)  
 
@@ -368,7 +368,7 @@ plot <- Seurat::CombinePlots(All_plot,ncol=1)
 ggsave("/mnt/data/userdata/abao/project/4_whole_genome_sequencing/1_Lishujun/other/cnvkit_out/rm_XY/Strict_all_DCNV_plot_each_sample.png", plot=plot,dpi=1080,width = 20, height = 10.6)
 ~~~
 
-![image-20210901113541229](D:\github_clone\Pipeline-of-genomics\The analysis_of_mouse_WGS.assets\image-20210901113541229.png)
+![image-20210901113541229](analysis_of_mouse_WGS.assets/image-20210901113541229.png)
 
 ~~~R
 library(GenVisR)
@@ -390,7 +390,7 @@ cnFreq(subset(All_DCNVs_genvisr,sample=="KO"),
    plotChr = c("chr1","chr2","chr3","chr4","chr5","chr6","chr7","chr8","chr9","chr10","chr11","chr12","chr13","chr14","chr15","chr16","chr17","chr18","chr19"))
 ~~~
 
-![image-20210901113557272](D:\github_clone\Pipeline-of-genomics\The analysis_of_mouse_WGS.assets\image-20210901113557272.png)
+![image-20210901113557272](analysis_of_mouse_WGS.assets/image-20210901113557272.png)
 
 ~~~R
 all_merge_call_copy <- fread("/mnt/data/userdata/abao/project/4_whole_genome_sequencing/1_Lishujun/other/cnvkit_out/rm_XY/all_merge_merge.call.cns")
@@ -428,7 +428,7 @@ ggplot(all_merge_call_copy1, aes(x=start, y=log2, color=sig_CNV)) +
 trqwe::mcsaveRDS(all_merge_call_copy1,"/mnt/data/userdata/abao/project/4_whole_genome_sequencing/1_Lishujun/other/cnvkit_out/rm_XY/all_merge_merge.call_with_sig_anno.rds")
 ~~~
 
-![image-20210901113623840](The analysis_of_mouse_WGS.assets/image-20210901113623840.png)
+![image-20210901113623840](analysis_of_mouse_WGS.assets/image-20210901113623840.png)
 
 ## 5.3 Highlight the gene regulated by sig CNV (***strict filtered, occurred in all case/control group, receptively***)  
 
@@ -479,7 +479,7 @@ geom_text_repel(
 )
 ~~~
 
-![image-20210901113722456](The analysis_of_mouse_WGS.assets/image-20210901113722456.png)
+![image-20210901113722456](analysis_of_mouse_WGS.assets/image-20210901113722456.png)
 
 ## 5.4 Summary of the CNV number in case/control samples
 
@@ -514,5 +514,5 @@ p2 <- ggboxplot(subset(All_Freq,Var2=="DEL"), x = "new_group", y = "Freq", fill=
 plot_grid(p1,p2)
 ~~~
 
-![image-20210901113808107](The analysis_of_mouse_WGS.assets/image-20210901113808107.png)
+![image-20210901113808107](analysis_of_mouse_WGS.assets/image-20210901113808107.png)
 
