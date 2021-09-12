@@ -128,7 +128,7 @@ $CNVKIT heatmap $all_chr_out/*.allChr.call.cns \
 -d -o $all_chr_out/all_merge_all_chr_CNV_heatmap.pdf
 ~~~
 
-![image-20210831115135764](Step3.assets/image-20210831115135764.png)
+![image-20210831115135764](mmu_WGS_Step3.assets/image-20210831115135764.png)
 
 ## 4. visualize the CNV results in R
 
@@ -167,7 +167,7 @@ plot <- Seurat::CombinePlots(All_plot,ncol=1)
 ggsave("/mnt/data/userdata/abao/project/4_whole_genome_sequencing/1_Lishujun/other/cnvkit_out/rm_XY/all_somatic_CNV_plot_each_sample.png", plot=plot,dpi=1080,width = 20, height = 10.6)
 ~~~
 
-![image-20210901113146991](Step3.assets/image-20210901113146991.png)
+![image-20210901113146991](mmu_WGS_Step3.assets/image-20210901113146991.png)
 
 ~~~R
 library(GenVisR)
@@ -189,7 +189,7 @@ cnFreq(subset(all_merge_call_copy1_genvisr,sample=="KO"),
    plotChr = c("chr1","chr2","chr3","chr4","chr5","chr6","chr7","chr8","chr9","chr10","chr11","chr12","chr13","chr14","chr15","chr16","chr17","chr18","chr19"))
 ~~~
 
-![image-20210901113206809](Step3.assets/image-20210901113206809.png)
+![image-20210901113206809](mmu_WGS_Step3.assets/image-20210901113206809.png)
 
 ### 4.2  sig CNV detected (***strict filtered, occurred in all case/control group, receptively***)  
 
@@ -269,19 +269,19 @@ plot <- Seurat::CombinePlots(All_plot,ncol=1)
 ggsave("/mnt/data/userdata/abao/project/4_whole_genome_sequencing/1_Lishujun/other/cnvkit_out/rm_XY/Strict_all_DCNV_plot_each_sample.png", plot=plot,dpi=1080,width = 20, height = 10.6)
 ~~~
 
-![image-20210901113541229](Step3.assets/image-20210901113541229.png)
+![image-20210901113541229](mmu_WGS_Step3.assets/image-20210901113541229.png)
 
 ~~~R
 library(GenVisR)All_DCNVs$new_group <- ifelse(All_DCNVs$sample=="35_N.rmXY" | All_DCNVs$sample=="35_L.rmXY" | All_DCNVs$sample=="35_B.rmXY","KO","WT")All_DCNVs_genvisr <- All_DCNVs[,c("seqnames","start","end","probes","log2","new_group")]colnames(All_DCNVs_genvisr) <- c("chromosome", "start", "end", "probes", "segmean", "sample")cnFreq(subset(All_DCNVs_genvisr,sample=="WT"),   CN_low_cutoff = -0.4,   CN_high_cutoff = 0.3,  plot_title = "sig. Common CNV in WT",   CN_Loss_colour = "#002EB8",   CN_Gain_colour = "#A30000",   x_title_size = 12,   y_title_size = 12,   facet_lab_size = 10,   plotLayer = NULL,   plotType = "proportion",   genome = "mm10",out = "plot",   plotChr = c("chr1","chr2","chr3","chr4","chr5","chr6","chr7","chr8","chr9","chr10","chr11","chr12","chr13","chr14","chr15","chr16","chr17","chr18","chr19"))cnFreq(subset(All_DCNVs_genvisr,sample=="KO"),   CN_low_cutoff = -0.4,   CN_high_cutoff = 0.3,  plot_title = "sig. Common CNV in KO",   CN_Loss_colour = "#002EB8",   CN_Gain_colour = "#A30000",   x_title_size = 12,   y_title_size = 12,   facet_lab_size = 10,   plotLayer = NULL,   plotType = "proportion",   genome = "mm10",out = "plot",   plotChr = c("chr1","chr2","chr3","chr4","chr5","chr6","chr7","chr8","chr9","chr10","chr11","chr12","chr13","chr14","chr15","chr16","chr17","chr18","chr19"))
 ~~~
 
-![image-20210901113557272](Step3.assets/image-20210901113557272.png)
+![image-20210901113557272](mmu_WGS_Step3.assets/image-20210901113557272.png)
 
 ~~~R
 all_merge_call_copy <- fread("/mnt/data/userdata/abao/project/4_whole_genome_sequencing/1_Lishujun/other/cnvkit_out/rm_XY/all_merge_merge.call.cns")all_merge_call_copy1 <- as.data.frame(all_merge_call_copy)all_merge_call_copy1$cn_status <- "AMP"all_merge_call_copy1[all_merge_call_copy1$cn<2,]$cn_status <- "DEL"all_merge_call_copy1[all_merge_call_copy1$cn==2,]$cn_status <- "ROH"all_merge_call_copy1$cn_status <- factor(all_merge_call_copy1$cn_status, levels=c("AMP","ROH","DEL"))all_merge_call_copy1$chromosome <- factor(all_merge_call_copy1$chromosome, levels=c("chr1","chr2","chr3","chr4","chr5","chr6",	"chr7","chr8","chr9","chr10","chr11","chr12","chr13","chr14","chr15","chr16","chr17","chr18","chr19"))all_merge_call_copy1 <- all_merge_call_copy1[order(all_merge_call_copy1$chromosome,all_merge_call_copy1$start,all_merge_call_copy1$end),]range(all_merge_call_copy1$log2)all_merge_call_copy1[all_merge_call_copy1$log2 > 2,]$log2 <- 2if (length(all_merge_call_copy1[all_merge_call_copy1$log2 < -2,]$log2)>0) {	all_merge_call_copy1[all_merge_call_copy1$log2 < -2,]$log2 <- -2}All_DCNVs$seg_ids <- paste(All_DCNVs$seqnames,All_DCNVs$start,All_DCNVs$end,All_DCNVs$sample)rownames(All_DCNVs) <- All_DCNVs$seg_idsall_merge_call_copy1$seg_ids <- paste(all_merge_call_copy1$chromosome,all_merge_call_copy1$start,all_merge_call_copy1$end,all_merge_call_copy1$sample)rownames(all_merge_call_copy1) <- all_merge_call_copy1$seg_idsall_merge_call_copy1$sig_CNV <- "No.Sig"all_merge_call_copy1[rownames(All_DCNVs),]$sig_CNV <- as.character(All_DCNVs$cn_status)all_merge_call_copy1$sig_CNV <- factor(all_merge_call_copy1$sig_CNV, levels=c("No.Sig","DEL","AMP"))all_merge_call_copy1$new_group <- ifelse(all_merge_call_copy1$sample=="35_N.rmXY" | all_merge_call_copy1$sample=="35_L.rmXY" | all_merge_call_copy1$sample=="35_B.rmXY","KO","WT")all_merge_call_copy1$new_group <- factor(all_merge_call_copy1$new_group,levels=c("WT","KO"))all_merge_call_copy1$chromosome <- factor(all_merge_call_copy1$chromosome, levels=c("chr1","chr2","chr3","chr4","chr5","chr6",	"chr7","chr8","chr9","chr10","chr11","chr12","chr13","chr14","chr15","chr16","chr17","chr18","chr19"))all_merge_call_copy1 <- all_merge_call_copy1[order(all_merge_call_copy1$sig_CNV,all_merge_call_copy1$chromosome,all_merge_call_copy1$start,all_merge_call_copy1$end),]range(all_merge_call_copy1$log2)ggplot(all_merge_call_copy1, aes(x=start, y=log2, color=sig_CNV)) + 	geom_point(size=.5,alpha=.5) + scale_color_manual(values=c("lightgrey","#002EB8","#A30000")) + theme_bw() +    ylab("Relative Depth Difference") + xlab("Position")+ylim(-2,2) + labs(title="KO vs WT") +     facet_wrap(~new_group+chromosome,nrow=2)+   theme(axis.ticks.x = element_blank(), axis.text.x = element_blank())trqwe::mcsaveRDS(all_merge_call_copy1,"/mnt/data/userdata/abao/project/4_whole_genome_sequencing/1_Lishujun/other/cnvkit_out/rm_XY/all_merge_merge.call_with_sig_anno.rds")
 ~~~
 
-![image-20210901113623840](Step3.assets/image-20210901113623840.png)
+![image-20210901113623840](mmu_WGS_Step3.assets/image-20210901113623840.png)
 
 ### 4.3 Highlight the gene regulated by sig CNV (***strict filtered, occurred in all case/control group, receptively***)  
 
@@ -289,7 +289,7 @@ all_merge_call_copy <- fread("/mnt/data/userdata/abao/project/4_whole_genome_seq
 all_merge_call_copy1 <- trqwe::mcreadRDS("/mnt/data/userdata/abao/project/4_whole_genome_sequencing/1_Lishujun/other/cnvkit_out/rm_XY/all_merge_merge.call_with_sig_anno.rds")sig_CNV <- subset(all_merge_call_copy1,sig_CNV!="No.Sig")CNV_genes <- unique(unlist(strsplit(sig_CNV$gene,split=",")))CNV_genes <- setdiff(CNV_genes,"-")sig_CNV_extract <- sig_CNV[sig_CNV[,"gene"]%in%CNV_genes,]dup_genes <- names(table(sig_CNV_extract$gene))[table(sig_CNV_extract$gene)>1]tmp_all_ <- lapply(dup_genes,function(x) {  tmp <- subset(sig_CNV_extract,gene==x)  tmp$length <- tmp$end-tmp$start  max_length <- tmp$length[tmp$length==max(tmp$length)]  if (length(max_length)==1){    tmp1 <- subset(tmp,length==max_length)    tmp1 <- tmp1[,-ncol(tmp1)]  } else {    tmp1 <- subset(tmp,weight==max(tmp$weight))    tmp1 <- tmp1[,-ncol(tmp1)]  }  return(tmp1)  })dup_matrix <- do.call(rbind,tmp_all_)matrix_extract_uni <- sig_CNV[sig_CNV[,"gene"]%in%names(table(sig_CNV$gene))[table(sig_CNV$gene)==1],]matrix_extract_uni <- rbind(matrix_extract_uni,dup_matrix)All_cnv_data <- rbind(matrix_extract_uni,subset(all_merge_call_copy1,sig_CNV=="No.Sig"))All_cnv_data$new_gene <- All_cnv_data$geneAll_cnv_data$new_gene <- unlist(lapply(strsplit(All_cnv_data$gene,split=","),function(x) {  return(length(x))}))All_cnv_data[All_cnv_data$new_gene==1,]$new_gene <- All_cnv_data[All_cnv_data$new_gene==1,]$genelibrary(ggrepel)ggplot(All_cnv_data, aes(x=start, y=log2, color=sig_CNV)) +   geom_point(size=.5,alpha=.5) + scale_color_manual(values=c("lightgrey","#002EB8","#A30000")) + theme_bw() +    ylab("Relative Depth Difference") + xlab("Position")+ylim(-2,2) + labs(title="KO vs WT") +     facet_wrap(~new_group+chromosome,nrow=2)+   theme(axis.ticks.x = element_blank(), axis.text.x = element_blank()) +geom_text_repel(  data = subset(All_cnv_data,sig_CNV!="No.Sig" & gene!="-"),  aes(label = new_gene),  size = 4,  box.padding = unit(0.35, "lines"),  point.padding = unit(0.3, "lines"))
 ~~~
 
-![image-20210901113722456](Step3.assets/image-20210901113722456.png)
+![image-20210901113722456](mmu_WGS_Step3.assets/image-20210901113722456.png)
 
 ### 4.4 The summary of the CNV number in case/control samples
 
@@ -297,5 +297,5 @@ all_merge_call_copy1 <- trqwe::mcreadRDS("/mnt/data/userdata/abao/project/4_whol
 all_merge_call_copy1 <- trqwe::mcreadRDS("/mnt/data/userdata/abao/project/4_whole_genome_sequencing/1_Lishujun/other/cnvkit_out/rm_XY/all_merge_merge.call_with_sig_anno.rds")sig_CNV <- subset(all_merge_call_copy1,sig_CNV!="No.Sig")All_Freq <- as.data.frame(table(sig_CNV$sample,sig_CNV$cn_status))All_Freq$new_group <- ifelse(All_Freq$Var1=="35_N.rmXY" | All_Freq$Var1=="35_L.rmXY" | All_Freq$Var1=="35_B.rmXY","KO","WT")library(ggpubr)library(cowplot)p1 <- ggboxplot(subset(All_Freq,Var2=="AMP"), x = "new_group", y = "Freq", fill="new_group",  title=c("AMP.Sig.CNV.number"), legend = "none",outlier.shape = NA,notch = FALSE) +  rotate_x_text(angle = 45)+ stat_compare_means(comparisons =list(c("WT","KO")),    method = "t.test",paired=TRUE)p2 <- ggboxplot(subset(All_Freq,Var2=="DEL"), x = "new_group", y = "Freq", fill="new_group",  title=c("DEL.Sig.CNV.number"), legend = "none",outlier.shape = NA,notch = FALSE) +  rotate_x_text(angle = 45)+ stat_compare_means(comparisons =list(c("WT","KO")),    method = "t.test",paired=TRUE)plot_grid(p1,p2)All_Freq <- as.data.frame(table(all_merge_call_copy1$sample,all_merge_call_copy1$cn_status))All_Freq$new_group <- ifelse(All_Freq$Var1=="35_N.rmXY" | All_Freq$Var1=="35_L.rmXY" | All_Freq$Var1=="35_B.rmXY","KO","WT")library(ggpubr)library(cowplot)p1 <- ggboxplot(subset(All_Freq,Var2=="AMP"), x = "new_group", y = "Freq", fill="new_group",  title=c("AMP.All.CNV.number"), legend = "none",outlier.shape = NA,notch = FALSE) +  rotate_x_text(angle = 45)+ stat_compare_means(comparisons =list(c("WT","KO")),    method = "t.test",paired=TRUE)p2 <- ggboxplot(subset(All_Freq,Var2=="DEL"), x = "new_group", y = "Freq", fill="new_group",  title=c("DEL.All.CNV.number"), legend = "none",outlier.shape = NA,notch = FALSE) +  rotate_x_text(angle = 45)+ stat_compare_means(comparisons =list(c("WT","KO")),    method = "t.test",paired=TRUE)plot_grid(p1,p2)
 ~~~
 
-![image-20210901113808107](Step3.assets/image-20210901113808107.png)
+![image-20210901113808107](mmu_WGS_Step3.assets/image-20210901113808107.png)
 
