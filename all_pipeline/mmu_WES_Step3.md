@@ -2,7 +2,7 @@
 
 This page showed the somatic CNV detected by `cnvkit ` without paired normal sample. To better visualize the CNVs results, we write some scripts based on `R`  to summary the CNV results in each sample.
 
-## 1.  CNV called by cnvkit (for individual samples)
+## 1.  CNV called by cnvkit (for individual samples) *(without paired normal sample)*
 
 ~~~shell
 ####reference and software

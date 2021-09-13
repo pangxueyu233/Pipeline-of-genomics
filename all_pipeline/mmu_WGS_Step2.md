@@ -2,7 +2,7 @@
 
 This page showed the somatic SNV called by `Mutect implemented in GATK4` without paired normal sample. To better visualize the SNVs results, we used `vep` to annotate the SNVs info, and transfer `.vcf` files to `.maf` files. Then, we could used `maftools >= v2.8` to summary the somatic SNVs results.
 
-- 2.1 somatic SNVs detected by Mutec2
+- 2.1 somatic SNVs detected by Mutec2 *(without paired normal sample)*
 
 ~~~shell
 ####execute codes
@@ -38,7 +38,7 @@ done
 
 ~~~
 
-- 2.2. SNVs annotated by vep and maf files generated
+- 2.2. SNVs annotated by vep and maf files generated *(without paired normal sample)*
 
 ~~~shell
 ####execute codes

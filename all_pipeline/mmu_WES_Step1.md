@@ -2,7 +2,7 @@
 
 # Step1. pre-processing of genomics data
 
-This page showed the pre-processing of WGS on mice data, including alignment, PCR duplicates removing, and BQSR.
+This page showed the pre-processing of WES/WXS on mice data, including alignment, PCR duplicates removing, and BQSR. 
 
 - *Here, we had specialize the position of `exon bed files` of mm10 refernce.*
 

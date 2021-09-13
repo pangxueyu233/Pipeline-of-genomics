@@ -2,7 +2,7 @@
 
 This page showed the somatic SNV called by `Mutect implemented in GATK4` without paired normal sample. To better visualize the SNVs results, we used `vep` to annotate the SNVs info, and transfer `.vcf` files to `.maf` files. Then, we could used `maftools >= v2.8` to summary the somatic SNVs results.
 
-- 2.1 somatic SNVs detected by Mutec2
+- 2.1 somatic SNVs detected by Mutec2 *(without paired normal sample)*
 
 ~~~shell
 ####execute codes
@@ -31,14 +31,16 @@ $GATK --java-options "-Xmx100G -Djava.io.tmpdir=./" ApplyBQSR \
 -O $BAMOUT/${sample}_BQSR.bam 
 
 $GATK --java-options "-Xmx100G -Djava.io.tmpdir=./" Mutect2 \
+-L $EXON_BED 
 -R $GENOME \
+-L $EXON_BED # add the exon bed
 -I $BAMOUT/${sample}_BQSR.bam \
 -O $SNVOUT/$sample.Mutect2only_tumor.vcf.gz ;
 done
 
 ~~~
 
-- 2.2. SNVs annotated by vep and maf files generated
+- 2.2. SNVs annotated by vep and maf files generated *(without paired normal sample)*
 
 ~~~shell
 ####execute codes
@@ -58,3 +60,10 @@ perl /mnt/data/userdata/xiangyu/programme/vcf2maf-master/vcf2maf.pl \
 --vep-forks 40 --species mus_musculus --species mus_musculus --ncbi-build GRCm38 ;
 done
 ~~~
+
+- 2.3 somatic SNVs detected by Mutec2 *(with paired normal sample)*
+
+
+
+- 2.4 SNVs annotated by vep and maf files generated *(with paired normal sample)*
+
