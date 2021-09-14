@@ -21,8 +21,8 @@ $GATK --java-options "-Xmx100G -Djava.io.tmpdir=./" FixMateInformation \
 
 $GATK --java-options "-Xmx100G -Djava.io.tmpdir=./" BaseRecalibrator \
 -R $GENOME -I $BAMOUT/${sample}_fix.bam \
---known-sites $mm10/mm10.INDELS.dbSNP142.vcf \
---known-sites $mm10/mm10.dbSNP142.vcf \
+--known-sites $mm10/chr_mm10.INDELS.dbSNP142.vcf \
+--known-sites $mm10/chr_mm10.dbSNP142.vcf \
 -O $BAMOUT/$sample.wes.recal_data.table
 
 $GATK --java-options "-Xmx100G -Djava.io.tmpdir=./" ApplyBQSR \

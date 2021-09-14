@@ -7,6 +7,21 @@ This page showed the pre-processing of WES/WXS on mice data, including alignment
 - *Here, we had specialize the position of `exon bed files` of mm10 refernce.*
 
 ~~~shell
+#for refrence,to match the mm10 version, we need to add the 'chr' in each chromosome name in refrence files. 
+cd /mnt/data/user_data/xiangyu/8922_server/programme/genome_index/GATK/GATK_REFER/bundle/mm10/dbsnp/dbsnp
+wget -O ./mm10.INDELS.dbSNP142.vcf.gz.tbi ftp://ftp-mouse.sanger.ac.uk/current_indels/strain_specific_vcfs/C57BL_6NJ.mgp.v5.indels.dbSNP142.normed.vcf.gz.tbi
+wget -O ./mm10.dbSNP142.vcf.gz.tbi ftp://ftp-mouse.sanger.ac.uk/current_indels/strain_specific_vcfs/C57BL_6NJ.mgp.v5.snps.dbSNP142.vcf.gz.tbi
+
+awk -v OFS='\t' '{chromosome="chr"$1;gsub($1,chromosome,$1);print $0}' mm10.INDELS.dbSNP142.vcf > chr_mm10.INDELS.dbSNP142.vcf1
+awk -v OFS='\t' '{chromosome="chr"$1;gsub($1,chromosome,$1);print $0}' mm10.dbSNP142.vcf > chr_mm10.dbSNP142.vcf1
+sed '1,70d' chr_mm10.INDELS.dbSNP142.vcf1 > chr_mm10.INDELS.dbSNP142.vcf.tmp
+head -n 70 mm10.INDELS.dbSNP142.vcf > head.tmp.INDEL
+cat head.tmp.INDEL chr_mm10.INDELS.dbSNP142.vcf.tmp > chr_mm10.INDELS.dbSNP142.vcf
+sed '1,69d' chr_mm10.dbSNP142.vcf1 > chr_mm10.dbSNP142.vcf.tmp
+head -n 69 mm10.dbSNP142.vcf > head.tmp.dbSNP142
+cat head.tmp.dbSNP142 chr_mm10.dbSNP142.vcf.tmp > chr_mm10.dbSNP142.vcf
+rm -r chr_mm10.INDELS.dbSNP142.vcf1 chr_mm10.dbSNP142.vcf1 chr_mm10.INDELS.dbSNP142.vcf.tmp head.tmp.INDEL chr_mm10.dbSNP142.vcf.tmp head.tmp.dbSNP142
+
 ####reference and software
 mm10=/mnt/data/user_data/xiangyu/8922_server/programme/genome_index/GATK/GATK_REFER/bundle/mm10/dbsnp/dbsnp
 GENOME=/mnt/data/user_data/xiangyu/8922_server/programme/genome_index/bwa_index/bwa_mm10_index/genome.fa
