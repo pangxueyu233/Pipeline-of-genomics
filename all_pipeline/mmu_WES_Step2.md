@@ -31,7 +31,7 @@ $GATK --java-options "-Xmx100G -Djava.io.tmpdir=./" ApplyBQSR \
 -O $BAMOUT/${sample}_BQSR.bam 
 
 $GATK --java-options "-Xmx100G -Djava.io.tmpdir=./" Mutect2 \
--L $EXON_BED 
+-L $EXON_BED \
 -R $GENOME \
 -L $EXON_BED # add the exon bed
 -I $BAMOUT/${sample}_BQSR.bam \

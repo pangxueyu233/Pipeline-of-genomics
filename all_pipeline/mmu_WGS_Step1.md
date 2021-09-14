@@ -2,9 +2,11 @@
 
 # Step1. pre-processing of genomics data
 
-This page showed the pre-processing of WGS on mice data, including alignment, PCR duplicates removing, and BQSR.
+This page showed the pre-processing of WES/WXS on mice data, including references preparation, `fasta`alignment and PCR duplicates removing. 
 
-~~~shell
+1. Firstly, we should download the  `SNP` and `INDEL` reference files of `mm10`. And, we need to fix the format of these files to make it match to our `mm10` genome reference. *If you had processed these files before, you could skip this step*. 
+
+~~~R
 #for reference,to match the mm10 version, we need to add the 'chr' in each chromosome name in reference files. 
 cd /mnt/data/user_data/xiangyu/8922_server/programme/genome_index/GATK/GATK_REFER/bundle/mm10/dbsnp/dbsnp
 wget -O ./mm10.INDELS.dbSNP142.vcf.gz.tbi ftp://ftp-mouse.sanger.ac.uk/current_indels/strain_specific_vcfs/C57BL_6NJ.mgp.v5.indels.dbSNP142.normed.vcf.gz.tbi
@@ -22,6 +24,15 @@ sed 's/##contig=<ID=/##contig=<ID=chr/g' chr_mm10.dbSNP142.vcf.tmp1 > chr_mm10.d
 sed 's/##contig=<ID=/##contig=<ID=chr/g' chr_mm10.INDELS.dbSNP142.vcf.tmp1 > chr_mm10.INDELS.dbSNP142.vcf
 rm -r chr_mm10.INDELS.dbSNP142.vcf1 chr_mm10.dbSNP142.vcf1 chr_mm10.INDELS.dbSNP142.vcf.tmp head.tmp.INDEL chr_mm10.dbSNP142.vcf.tmp head.tmp.dbSNP142 chr_mm10.dbSNP142.vcf.tmp1 chr_mm10.INDELS.dbSNP142.vcf.tmp1
 
+####build the index file of reference
+GATK=/mnt/data/user_data/xiangyu/programme/gatk-4.1.3.0/gatk
+$GATK --java-options "-Xmx60G -Djava.io.tmpdir=./" IndexFeatureFile -F chr_mm10.dbSNP142.vcf
+$GATK --java-options "-Xmx60G -Djava.io.tmpdir=./" IndexFeatureFile -F chr_mm10.INDELS.dbSNP142.vcf
+~~~
+
+2. Then, we begin to align the `fasta` files and remove the PCR duplicates. 
+
+~~~shell
 ####build the index file of reference
 GATK=/mnt/data/user_data/xiangyu/programme/gatk-4.1.3.0/gatk
 $GATK --java-options "-Xmx60G -Djava.io.tmpdir=./" IndexFeatureFile -F chr_mm10.dbSNP142.vcf
