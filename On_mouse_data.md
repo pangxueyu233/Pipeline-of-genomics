@@ -14,7 +14,7 @@ Now, let's begin our pipeline of **whole genome sequencing (WGS)** data analysis
 
 - ### Step3. somatic CNV detcted in each sample
 
-- You could access the [Step3](all_pipeline/mmu_WGS_Step3.md) by clicking [here](all_pipeline/mmu_WGS_Step3.md)
+- You could access the [Step3 by clicking [here](all_pipeline/mmu_WGS_Step3.md)
 
 And we also share the visualization codes about the `Step2` results, and you also could access by clicking [here](
 

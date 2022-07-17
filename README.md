@@ -1,5 +1,5 @@
 # Pipeline-of-genomics
-This workshop recorded the whole processing steps of genomics analysis in CC-LY Lab, including alignment, quality control, somatic and germline SNV detected and CNV detected from fasta files. There were two individual pipelines to be executed for mouse and human data, respectively.  Here, we referred the GATK workshop for SNV calling, CNVkit workshop for CNV detecting. 
+This workshop records the whole processing steps of genomics analysis in CC-LY Lab, including alignment, quality control, somatic and germline SNV detected and CNV detected from fasta files. There were two individual pipelines designed for executing on mouse and human data, respectively. Here, we referred the GATK workshop for SNV calling, CNVkit workshop for CNV detecting.
 
 - The software we need: 
 
